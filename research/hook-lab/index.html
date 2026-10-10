@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Hook Regression Lab — Test Claude Code safety hook rules safely</title>
+<meta name="description" content="Free in-browser regression harness for Claude Code PreToolUse Bash rules. Test false positives and missed blocks without executing shell commands or uploading inputs.">
+<meta name="robots" content="index,follow">
+<link rel="canonical" href="https://alhussein-jamil.github.io/venture-notice-filter/research/hook-lab/">
+<link rel="stylesheet" href="style.css">
+<meta property="og:title" content="Hook Regression Lab — Test Claude Code hooks">
+<meta property="og:description" content="Test a Bash blocking regex against real edge cases. No shell execution, no data upload.">
+</head>
+<body>
+<header><nav><span class="eyebrow">OPEN RESEARCH EXPERIMENT · FREE</span><a href="https://github.com/alhussein-jamil/venture-notice-filter" rel="noopener">GitHub ↗</a></nav>
+<h1>Your safety hook shouldn't block a harmless command.</h1>
+<p class="lede">Test your Claude Code <strong>PreToolUse</strong> Bash-blocking regex against labeled regression cases. Find false positives and missed blocks <strong>without running any command</strong>. Everything stays in this browser tab.</p></header>
+<main>
+<section class="stack" aria-label="Regex regression tester">
+<div class="panel field"><label for="pattern">1. Blocking regex (JavaScript syntax)</label>
+<textarea id="pattern" spellcheck="false" aria-describedby="regex-hint"></textarea>
+<small id="regex-hint">A matching command is classified BLOCK; a non-match is ALLOW. This is a regex lab, <em>not</em> a shell parser. Do not enter secrets.</small></div>
+<div class="panel field"><label for="cases">2. Labeled examples</label><textarea id="cases" spellcheck="false" aria-describedby="cases-hint"></textarea>
+<small id="cases-hint">One case per line: <code>BLOCK | rm -rf /</code> or <code>ALLOW | echo hello</code>. Blank lines and # comments ignored.</small></div>
+<div class="wide"><div class="toolbar"><button id="run">Run regression checks</button><button id="reset" class="secondary">Restore examples</button><button id="export" class="secondary" disabled>Download JSON report</button></div><p id="message" class="notice" role="status"></p></div>
+<div class="panel wide"><h2 id="summary" aria-live="polite">Checking examples…</h2><div id="results" aria-label="Test outcomes"></div></div>
+</section>
+<section class="explain" aria-label="Why this matters">
+<div class="panel"><h2>Problems this tests</h2><ul>
+<li>A filename such as <code>soft-hold-enrollment</code> should not be mistaken for an <code>rm -r</code> option.</li>
+<li><code>git checkout --detach</code> is not the same as destructive checkout flags.</li>
+<li>A command quoted in documentation or a heredoc is not necessarily executed.</li>
+</ul><p>These behaviors were raised in <a href="https://github.com/disler/claude-code-hooks-mastery/issues/28" rel="noopener">hook false-positive report #28</a> and <a href="https://github.com/Adam077K/agentvibe/issues/96" rel="noopener">hook regression report #96</a>.</p></div>
+<div class="panel"><h2>Would an automated CLI test suite help?</h2><p>This is a free proof of concept. The next experiment is a CLI/CI checker that runs hook fixtures before deployment. No paid product exists yet.</p>
+<p><a class="button" href="https://github.com/alhussein-jamil/venture-notice-filter/issues/new?title=%5BHookLab%20interest%5D%20I%27d%20try%20a%20CLI%2FCI%20version&amp;body=Which%20hook%20failure%20do%20you%20need%20to%20test%3F%0A%0A" rel="noopener">Request the CLI version ↗</a></p>
+<p><small>Submitting an issue requires a GitHub account. It's voluntary feedback, not a signup, sale, or preorder.</small></p>
+<p><a href="https://github.com/alhussein-jamil/venture-notice-filter/issues/new?title=%5BHookLab%20bug%5D%20&amp;body=Expected%20vs%20actual%3A%0A" rel="noopener">Report a bug or false positive</a></p>
+</div>
+</section>
+<p class="disclaimer"><strong>Not a security boundary.</strong> Regex matches cannot safely parse arbitrary shell pipelines, substitutions, quoting, SQL, or other nested interpreters. A green test suite only demonstrates your supplied examples. Keep Claude Code permissions and sandboxing enabled. We neither execute nor receive your commands.</p>
+</main>
+<footer><p>Hook Regression Lab · client-side, no trackers or cookies · independent community experiment, not affiliated with Anthropic. <a href="https://code.claude.com/docs/en/hooks" rel="noopener">Official hooks documentation</a>.</p></footer>
+<script type="module" src="app.js"></script>
+</body></html>

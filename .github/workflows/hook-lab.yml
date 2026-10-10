@@ -1,0 +1,17 @@
+name: Hook Lab regression
+on:
+  pull_request:
+    paths: ["research/hook-lab/**", ".github/workflows/hook-lab.yml"]
+  push:
+    branches: [master]
+    paths: ["research/hook-lab/**", ".github/workflows/hook-lab.yml"]
+permissions: { contents: read }
+jobs:
+  tests:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: '22' }
+      - run: node --test research/hook-lab/tests/test.mjs
