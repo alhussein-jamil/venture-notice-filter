@@ -1,0 +1,33 @@
+name: Observe Hook Lab feedback
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "41 7 * * 1"
+  push:
+    branches: [master]
+    paths: ["research/hook-lab/scripts/observe.mjs", ".github/workflows/hook-lab-observe.yml"]
+  pull_request:
+    paths: ["research/hook-lab/scripts/observe.mjs", ".github/workflows/hook-lab-observe.yml"]
+permissions:
+  contents: read
+  issues: read
+jobs:
+  observe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: '22' }
+      - run: node --test research/hook-lab/tests/*.mjs
+      - name: Fetch actual public issues
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: node research/hook-lab/scripts/observe.mjs
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: hook-lab-observation
+          path: reports/hook-lab-observation.*
+          if-no-files-found: warn
+          retention-days: 30
