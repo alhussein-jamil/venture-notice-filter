@@ -16,7 +16,6 @@ jobs:
         with: { node-version: '22' }
       - run: node --test research/hook-lab/tests/test.mjs
       - name: Verify actual published page after merge
-        if: github.event_name == 'push'
         shell: bash
         run: |
           url="https://alhussein-jamil.github.io/venture-notice-filter/research/hook-lab/"
