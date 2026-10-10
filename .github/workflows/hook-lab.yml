@@ -1,7 +1,7 @@
 name: Hook Lab regression
 on:
   pull_request:
-    paths: ["research/hook-lab/**", ".github/workflows/hook-lab.yml"]
+    paths: ["research/hook-lab/**", ".github/workflows/hook-lab.yml", "README.md", "index.html", "robots.txt", "sitemap.xml"]
   push:
     branches: [master]
     paths: ["research/hook-lab/**", ".github/workflows/hook-lab.yml"]
@@ -15,6 +15,12 @@ jobs:
       - uses: actions/setup-node@v4
         with: { node-version: '22' }
       - run: node --test research/hook-lab/tests/test.mjs
+      - name: Verify internal discovery links and sitemap
+        run: |
+          grep -q 'research/hook-lab/' index.html
+          grep -q 'research/hook-lab/' sitemap.xml
+          grep -q 'sitemap.xml' robots.txt
+          grep -q 'Hook Regression Lab' README.md
       - name: Verify actual published page after merge
         shell: bash
         run: |

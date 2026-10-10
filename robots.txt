@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://alhussein-jamil.github.io/venture-notice-filter/sitemap.xml
