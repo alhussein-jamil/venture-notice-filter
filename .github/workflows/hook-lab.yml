@@ -15,3 +15,17 @@ jobs:
       - uses: actions/setup-node@v4
         with: { node-version: '22' }
       - run: node --test research/hook-lab/tests/test.mjs
+      - name: Verify actual published page after merge
+        if: github.event_name == 'push'
+        shell: bash
+        run: |
+          url="https://alhussein-jamil.github.io/venture-notice-filter/research/hook-lab/"
+          for attempt in $(seq 1 20); do
+            if curl -fsSL --max-time 8 "$url" -o /tmp/hook-lab.html && grep -q 'Hook Regression Lab' /tmp/hook-lab.html; then
+              echo "Verified HTTP 200 and product heading: $url"
+              exit 0
+            fi
+            sleep 6
+          done
+          echo "Could not independently verify GitHub Pages deployment"
+          exit 1
